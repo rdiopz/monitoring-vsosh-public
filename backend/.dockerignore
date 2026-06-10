@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+venv/
+.venv/
+env/
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+
+# Кэш
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Static/Media
+staticfiles/
+media/
+
+# Логи
+*.log
+
+# Доп. конфиги
+mypy.ini
+ruff.toml

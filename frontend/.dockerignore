@@ -1,0 +1,25 @@
+# Зависимости
+node_modules/
+
+# Сборка
+dist/
+.temp/
+.cache/
+.env.example
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+
+# Конфиги (только для разработки)
+.prettierrc.json
+eslint.config.js
+.editorconfig
+.eslintcache
+
+# Markdown content
+README.md

@@ -1,0 +1,177 @@
+services:
+  # =============================================================================
+  # ИНИЦИАЛИЗАЦИЯ (миграции + статика)
+  # =============================================================================
+  init:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vsosh-init
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    env_file:
+      - ./backend/.env.production
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
+    user: "0:0"
+    command: >
+      sh -c "
+        echo 'Starting initialization...' &&
+        mkdir -p /app/staticfiles /app/media &&
+        echo 'Running database migrations...' &&
+        python manage.py migrate &&
+        echo 'Collecting static files...' &&
+        python manage.py collectstatic --noinput --clear &&
+        echo 'Setting permissions...' &&
+        chown -R 1000:1000 /app/staticfiles /app/media &&
+        echo 'Initialization complete!'
+      "
+    restart: "no"
+
+  # =============================================================================
+  # BACKEND (Django)
+  # =============================================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vsosh-backend
+    env_file:
+      - ./backend/.env.production
+    volumes:
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media
+    depends_on:
+      init:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "python manage.py check --database default"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # =============================================================================
+  # FRONTEND (Nginx + Vue)
+  # =============================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+      - VITE_API_BASE_URL=http://localhost/api
+    container_name: vsosh-frontend
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # =============================================================================
+  # REDIS
+  # =============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: vsosh-redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+
+  # =============================================================================
+  # CELERY WORKER (фоновые задачи)
+  # =============================================================================
+  celery-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vsosh-celery-worker
+    env_file:
+      - ./backend/.env.production
+    volumes:
+      - media_volume:/app/media
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
+    command: celery -A config worker --loglevel=info
+    restart: unless-stopped
+
+  # =============================================================================
+  # CELERY BEAT (планировщик задач)
+  # =============================================================================
+  celery-beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vsosh-celery-beat
+    env_file:
+      - ./backend/.env.production
+    volumes:
+      - media_volume:/app/media
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - app-network
+    command: celery -A config beat --loglevel=info
+    restart: unless-stopped
+
+
+  # =============================================================================
+  # NGINX PROXY (обратный прокси)
+  # =============================================================================
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: vsosh-proxy
+    ports:
+      - "80:80"
+      # - "443:443"  # Закомментировано: только для продакшена с SSL
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      # - /etc/letsencrypt:/etc/letsencrypt:ro  # Закомментировано: только для продакшена с SSL
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_started
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  redis_data:
+    driver: local
+  static_volume:
+    driver: local
+  media_volume:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

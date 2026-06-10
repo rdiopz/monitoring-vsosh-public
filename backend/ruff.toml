@@ -1,0 +1,38 @@
+# Ruff configuration
+# https://docs.astral.sh/ruff/configuration/
+
+line-length = 100
+target-version = "py312"
+
+# Исключить миграции и venv
+exclude = [
+    "**/migrations/**",
+    "venv/**",
+    ".venv/**",
+]
+
+[lint]
+# Только базовые правила
+select = [
+    "E",      # pycodestyle: ошибки стиля
+    "W",      # pycodestyle: предупреждения
+    "F",      # Pyflakes: ошибки импортов
+    "I",      # isort: сортировка импортов,
+    "B",      # flake8-bugbear: частые баги,
+    "SIM",    # Упрощение кода (flake8-simplify)
+    "UP",     # Современный Python (pyupgrade)
+]
+
+ignore = [
+    "E501",   # Игнорировать длинные строки
+]
+
+# Разрешить импорты без использования в __init__.py (реэкспорты)
+[lint.per-file-ignores]
+"**/__init__.py" = ["F401"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

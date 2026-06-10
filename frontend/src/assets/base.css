@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+/* Сброс стилей */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+}
+
+/* Cветлая тема */
+:root {
+  /* Основные цвета */
+  --white: #ffffff;
+  --secondary: #435aaa;
+  --primary: #ea6744;
+  --dark: #191928;
+  --bg: #f8fafc;
+
+  /* Цвета статусов */
+  --success: #48bb78;
+  --warning: #ed8936;
+  --error: #f56565;
+  --info: #3b82f6;
+
+  /* Цвета текста */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --on-dark: #f8fafc;
+  --on-header: #f8fafc;
+
+  /* Градиенты */
+  --gradient-header: linear-gradient(229deg, #435aaa 0%, #1e293b 50%, #1e293b 100%);
+  --gradient-tab: linear-gradient(to bottom, #ea6744 0%, #ffffff 90%, #ffffff 100%);
+  --gradient-top-bottom: linear-gradient(to bottom, #435aaa 0%, #1e293b 50%);
+  --gradient-side-tab: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--primary) 10%, transparent) 0%,
+    color-mix(in srgb, var(--white) 10%, transparent) 90%,
+    color-mix(in srgb, var(--white) 10%, transparent) 100%
+  );
+  --secondary-transparent: #435aaa80;
+
+  /* Специфичные цвета */
+  --head-color-table: #eaefff;
+  --bg-tabs: rgba(255, 255, 255, 0.1);
+  --button-hover: #d45a38;
+  --button-pressed: #bd4d2c;
+  --dark-secondary: #1e293b;
+  --theme-button-color: var(--secondary);
+
+  /* Фоны и границы */
+  --color-background: var(--bg);
+  --color-background-soft: #f0f4f8;
+  --color-background-mute: #e8edf3;
+  --color-border: #bdc3ca; /* e2e8f0 bdc3ca */
+  --color-border-hover: var(--primary);
+
+  /* Цвета дашборда: этапы */
+  --chart-stage-she: #a8b8ee;
+  --chart-stage-me: #7f95dd;
+  --chart-stage-re: #435aaa;
+  --chart-stage-ze: #2f3f7a;
+
+  /* Цвета дашборда: статусы */
+  --chart-status-winner: var(--primary);
+  --chart-status-prize: var(--secondary);
+  --chart-status-participant: var(--success);
+
+  /* Цвета дашборда: пол */
+  --chart-gender-m: #435aaa;
+  --chart-gender-f: #ea6744;
+
+  /* Цвета дашборда: остальные графики */
+  --chart-year: #5b70c7;
+  --chart-year-alt: #ea6744;
+  --chart-year-success: #48bb78;
+  --chart-subject: #6f56c9;
+  --chart-municipality: #ea6744;
+  --chart-education: #7b8798;
+  --chart-class: #3b82f6;
+  --chart-rating: #d98d32;
+}
+
+/* Темная тема (инвертированные) */
+[data-theme='dark'] {
+  /* Основные цвета */
+  --secondary: #5b70c7;
+  --primary: #ac6450; /* C46A50 AC6450 9b5946 AC6450 */
+  --dark: #cbd5e1;
+  --white: #1e293b;
+  --bg: #0f172a;
+
+  /* Цвета статусов */
+  --success: #68d391;
+  --warning: #f6ad55;
+  --error: #fc8181;
+  --info: #60a5fa;
+
+  /* Цвета текста */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --on-dark: #0f172a;
+  --on-header: rgb(203, 213, 225);
+
+  /* Градиенты для темной темы */
+  --gradient-header: linear-gradient(131deg, var(--white) 0%, #0f172a 50%, #0f172a 100%);
+  --gradient-tab: linear-gradient(to bottom, #ce5838 0%, #1e293b 90%, #1e293b 100%);
+  --gradient-top-bottom: linear-gradient(to bottom, #2d3a6b 0%, #0f172a 50%);
+  --gradient-side-tab: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--primary) 10%, transparent) 0%,
+    color-mix(in srgb, var(--white) 10%, transparent) 90%,
+    color-mix(in srgb, var(--white) 10%, transparent) 100%
+  );
+
+  --secondary-transparent: #6a85cc80;
+
+  /* Специфичные цвета для темной темы */
+  --head-color-table: #2d3a6b;
+  --bg-tabs: rgba(0, 0, 0, 0.1);
+  --button-hover: #c46a50;
+  --button-pressed: #974025;
+  --dark-secondary: #cbd5e1;
+  --theme-button-color: #191928;
+
+  /* Фоны и границы для темной темы */
+  --color-background: var(--bg);
+  --color-background-soft: #212f44;
+  --color-background-mute: #334155;
+  --color-border: #475569;
+  --color-border-hover: var(--primary);
+
+  /* Цвета дашборда: этапы */
+  --chart-stage-she: #9fb1ea;
+  --chart-stage-me: #7f98e3;
+  --chart-stage-re: #5b70c7;
+  --chart-stage-ze: #7a8edc;
+
+  /* Цвета дашборда: статусы */
+  --chart-status-winner: var(--primary);
+  --chart-status-prize: var(--secondary);
+  --chart-status-participant: var(--success);
+
+  /* Цвета дашборда: пол */
+  --chart-gender-m: #5b70c7;
+  --chart-gender-f: #ce7258;
+
+  /* Цвета дашборда: остальные графики */
+  --chart-year: #7b8fe0;
+  --chart-year-alt: #ce7258;
+  --chart-year-success: #68d391;
+  --chart-subject: #9a7cf0;
+  --chart-municipality: #ce7258;
+  --chart-education: #94a3b8;
+  --chart-class: #60a5fa;
+  --chart-rating: #f6ad55;
+}
+
+/* Типографика */
+:root {
+  --font-family:
+    'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    sans-serif;
+
+  /* Стили текста */
+  --large-text: 700 1.5rem/1.4 var(--font-family);
+  --medium-text: 500 1.125rem var(--font-family);
+  --small-text: 400 1rem var(--font-family);
+  --head-text: 700 0.875rem var(--font-family);
+  --semibold-head-text: 600 0.875rem var(--font-family);
+  --common-text: 400 0.875rem var(--font-family);
+  --head-small-text: 700 0.625rem var(--font-family);
+  --tiny-text: 400 0.75rem/1.5 var(--font-family);
+
+  /* Letter spacing 0% и 5% */
+  --letter-spacing-head: 0.05em;
+  --letter-spacing-normal: 0em;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--text-primary);
+  background: var(--color-background);
+  transition:
+    color 1s,
+    background-color 1s;
+  line-height: 1.6;
+  font-family: var(--font-family);
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+}
+
+/* Классы для типографики */
+.large-text {
+  font: var(--large-text);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.medium-text {
+  font: var(--medium-text);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.small-text {
+  font: var(--small-text);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.tiny-text {
+  font: var(--tiny-text);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.head-text {
+  font: var(--head-text);
+  letter-spacing: var(--letter-spacing-head);
+}
+
+.semibold-head-text {
+  font: var(--semibold-head-text);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+.small-head-text {
+  font: var(--head-small-text);
+  letter-spacing: var(--letter-spacing-head);
+}
+
+.common-text {
+  font: var(--common-text);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+/* Утилитарные классы для цветов */
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-tertiary {
+  color: var(--text-tertiary);
+}
+
+.text-on-dark {
+  color: var(--on-dark);
+}
+
+.text-accent {
+  color: var(--primary);
+}
+
+.text-on-header {
+  color: var(--on-header);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+.bg-white {
+  background-color: var(--white);
+}
+
+.bg-secondary {
+  background-color: var(--secondary);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-dark {
+  background-color: var(--dark);
+}
+
+.bg-main {
+  background-color: var(--bg);
+}
+
+/* Градиенты */
+.bg-gradient-header {
+  background: var(--gradient-header);
+}
+
+.bg-gradient-tab {
+  background: var(--gradient-tab);
+}
+
+.bg-gradient-top-bottom {
+  background: var(--gradient-top-bottom);
+}
+
+/* Дополнительные утилиты */
+.bg-head-table {
+  background-color: var(--head-color-table);
+}
+
+.bg-tabs {
+  background: var(--bg-tabs);
+}
+
+.border-secondary {
+  border-color: var(--secondary-transparent);
+}

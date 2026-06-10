@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@widgets/*": ["./src/widgets/*"],
+      "@features/*": ["./src/features/*"],
+      "@entities/*": ["./src/entities/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@stores/*": ["./src/app/stores/*"],
+      "@ui/*": ["./src/shared/ui/*"],
+      "@icons/*": ["./src/shared/icons/*"],
+      "@lib/*": ["./src/shared/lib/*"],
+      "@utils/*": ["./src/shared/lib/utils/*"],
+      "@composables/*": ["./src/shared/lib/composables/*"],
+      "@services/*": ["./src/shared/services/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@admin/*": ["./src/features/admin-panel/*"],
+      "@analysis/*": ["./src/features/analysis/*"],
+      "@auth/*": ["./src/features/auth/*"],
+      "@profile/*": ["./src/features/profile/*"],
+      "@operations/*": ["./src/features/data-operations/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

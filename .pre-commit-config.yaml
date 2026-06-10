@@ -1,0 +1,73 @@
+default_language_version:
+  python: python3
+
+exclude: \.(md|txt)$|\.env(\..+)?$
+
+repos:
+  # Стандартные хуки для всех файлов
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        files: ^(frontend|backend)/
+      - id: end-of-file-fixer
+        files: ^(frontend|backend)/
+      - id: check-yaml
+        files: ^(frontend|backend)/
+      - id: check-json
+        files: ^(frontend|backend)/
+      - id: check-toml
+        files: ^(frontend|backend)/
+      - id: mixed-line-ending
+        files: ^(frontend|backend)/
+        args: [--fix=lf]
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+
+  # Backend: Ruff (линтер + форматтер)
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: ruff format
+        entry: ruff format
+        language: system
+        types: [python]
+        files: ^backend/
+
+      - id: ruff-check
+        name: ruff check
+        entry: ruff check
+        language: system
+        types: [python]
+        files: ^backend/
+        args: [--fix, --exit-non-zero-on-fix]
+
+  # Backend: Mypy (типы)
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: cmd /c "cd /d backend && mypy --config-file mypy.ini ."
+        language: system
+        types: [python]
+        files: ^backend/
+        pass_filenames: false
+
+  # Frontend: ESLint + Prettier
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint lint
+        entry: cmd /c "cd /d frontend && npm run lint"
+        language: system
+        types_or: [javascript, vue]
+        files: ^frontend/
+        pass_filenames: false
+
+      - id: prettier
+        name: prettier format
+        entry: cmd /c "cd /d frontend && npm run format"
+        language: system
+        types_or: [javascript, vue, css, json]
+        files: ^frontend/
+        pass_filenames: false
